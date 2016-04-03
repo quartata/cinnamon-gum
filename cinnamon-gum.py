@@ -16,8 +16,9 @@ def bb96encode(code, a = 0, s = []):
 with open(sys.argv[1], 'rb') as file:
   code = file.read()
 
+i = input()
+
 if bb96encode(hashlib.sha256(code).digest()) == b"3'A~2dM'O6xiv9fzcp_ZoaI@eikCL*)%mR])NoB":
-  i = input()
   exec(code)
 else:
   try:
@@ -28,7 +29,10 @@ else:
     except:
       o = bb96encode(code)
 
-try:
-  sys.stdout.buffer.write(o)
-except:
-  print(o, end="")
+  try:
+    if(sys.argv[2] == "l"):
+      print dict([pair.split(",") for pair in o.split("/")])[i]
+    else:
+      print(o, end="")
+  except:
+    print(o, end="")

@@ -34,6 +34,10 @@ else:
   o = "".join(map(chr,o))
 
   if mode == "l":
-    print(dict([pair.split("&") for pair in o.split(";")])[i])
+    rows = [row.split("&") for row in o.split(";")]
+    table = {}
+    for row in rows:
+      table.update(dict(zip(row[:-1],[row[-1]]*(len(row)-1))))
+    print(table[i])
   else:
     print(o, end="")

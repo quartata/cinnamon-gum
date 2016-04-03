@@ -29,6 +29,8 @@ else:
     except:
       o = bb96encode(code)
 
+  o = "".join(map(chr,o))
+
   try:
     if(sys.argv[2] == "l"):
       print(dict([pair.split(",") for pair in o.split("/")])[i])

@@ -31,7 +31,7 @@ else:
 
   try:
     if(sys.argv[2] == "l"):
-      print dict([pair.split(",") for pair in o.split("/")])[i]
+      print(dict([pair.split(",") for pair in o.split("/")])[i])
     else:
       print(o, end="")
   except:

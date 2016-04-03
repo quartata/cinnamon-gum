@@ -16,7 +16,7 @@ def bb96encode(code, a = 0, s = []):
 with open(sys.argv[1], 'rb') as file:
   code = file.read()
 
-mode = code[0]
+mode = chr(code[0])
 code = code[1:]
 i = input()
 
@@ -33,7 +33,7 @@ else:
 
   o = "".join(map(chr,o))
 
-  if(mode == "l"):
+  if mode == "l":
     print(dict([pair.split("&") for pair in o.split(";")])[i])
   else:
-      print(o, end="")
+    print(o, end="")

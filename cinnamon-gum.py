@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import hashlib, lzma, sys, zlib
+import ast, hashlib, lzma, sys, zlib
 
 def bb96encode(code, a = 0, s = []):
   code = list(code)
@@ -38,6 +38,8 @@ else:
     table = {}
     for row in rows:
       table.update(dict(zip(row[:-1],[row[-1]]*(len(row)-1))))
-    print(table[i])
+    print(table[i], end="")
+  elif mode == "f":
+    print(o % ast.literal_eval(i), end="")
   else:
     print(o, end="")

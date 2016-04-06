@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import ast, exrex, hashlib, lzma, sys, zlib
+import ast, exrex, hashlib, lzma, re, sys, zlib
 
 def bb96encode(code, a = 0, s = []):
   code = list(code)
@@ -50,5 +50,15 @@ else:
   elif mode == "h":
     for string in exrex.generate(o % ast.literal_eval(i)):
       print(string)
+  elif mode == "e":
+    rows = [row.split("&") for row in o.split(";")]
+    table = {}
+    for row in rows:
+      table.update(dict(zip(row[:-1],[row[-1]]*(len(row)-1))))
+    for char in i:
+      print(table[i], end="")
+  elif mode == "s":
+    subs = o.split("&")
+    print(re.sub(subs[0],subs[1],i))
   else:
     print(o, end="")

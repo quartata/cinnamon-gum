@@ -18,7 +18,10 @@ with open(sys.argv[1], 'rb') as file:
 
 mode = chr(code[0])
 code = code[1:]
-i = input()
+try:
+  i = input()
+except EOFError:
+  i = ""
 
 if bb96encode(hashlib.sha256(code).digest()) == b"3'A~2dM'O6xiv9fzcp_ZoaI@eikCL*)%mR])NoB":
   exec(code)

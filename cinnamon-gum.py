@@ -48,8 +48,14 @@ else:
     for string in exrex.generate(o):
       print(string)
   elif mode == "h":
+    inputStr = ast.literal_eval(i)
+    inputStr = re.sub(r"^",r"\\^",inputStr);
+    inputStr = re.sub(r"]",r"\\]",inputStr);
+    inputStr = re.sub(r"-",r"\\-",inputStr);
     for string in exrex.generate(o % ast.literal_eval(i)):
       print(string)
+  elif mode == "p":
+    print(re.sub(r"~(.)",r"\1" * ast.literal_eval(i))) 
   elif mode == "e":
     rows = [row.split("&") for row in o.split(";")]
     table = {}

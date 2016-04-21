@@ -55,7 +55,7 @@ else:
     for string in exrex.generate(o % ast.literal_eval(i)):
       print(string)
   elif mode == "p":
-    print(re.sub(r"~(.)",r"\1" * ast.literal_eval(i))) 
+    print(re.sub(r"~(.)",r"\1" * ast.literal_eval(i),o)) 
   elif mode == "e":
     rows = [row.split("&") for row in o.split(";")]
     table = {}

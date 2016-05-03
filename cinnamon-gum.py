@@ -50,9 +50,7 @@ else:
   elif mode == "h":
     inputStr = ast.literal_eval(i)
     if type(inputStr) is str:
-      inputStr = re.sub(r"\^",r"\\^",inputStr);
-      inputStr = re.sub(r"]",r"\\]",inputStr);
-      inputStr = re.sub(r"-",r"\\-",inputStr);
+      inputStr = re.escape(inputStr)
     for string in exrex.generate(o % ast.literal_eval(i)):
       print(string)
   elif mode == "p":

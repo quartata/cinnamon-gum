@@ -51,7 +51,7 @@ else:
     inputStr = ast.literal_eval(i)
     if type(inputStr) is str:
       inputStr = re.escape(inputStr)
-    for string in exrex.generate(o % ast.literal_eval(i)):
+    for string in exrex.generate(o % inputStr):
       print(string)
   elif mode == "p":
     print(re.sub(r"~(.)",r"\1" * ast.literal_eval(i),o)) 

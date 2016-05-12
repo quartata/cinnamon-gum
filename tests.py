@@ -17,9 +17,9 @@ for test in enumerate(tests):
     if subprocess.check_output("python3 cinnamon-gum.py %s < '%s'" % [temp.name, test[1][1]], shell=True) == test[1][2]:
       pass
     else:
-      print("Test " + str(test[0] + 1) + " " + test[1][0]+" failed (incorrect output)\n")
+      print("Test " + str(test[0] + 1) + " " + str(test[1][0]) +" failed (incorrect output)\n")
   except Exception as e:
-    print("Test " + str(test[0] + 1) + " " + test[1][0]+" failed (exception %s)\n" % e)
+    print("Test " + str(test[0] + 1) + " " + str(test[1][0]) +" failed (exception %s)\n" % e)
 
 if not failures:
   sys.exit(1)

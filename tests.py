@@ -3,7 +3,7 @@
 import subprocess, sys, tempfile
 
 tests = [
-  ["p\x01\xe42\xe3\xb0", "3", r"\\\o///"]
+  [b"p\x01\xe42\xe3\xb0", "3", r"\\\o///"]
 ]
 
 interpreter_path = "python3"

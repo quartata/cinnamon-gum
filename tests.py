@@ -19,13 +19,13 @@ for test in enumerate(tests):
     if result == test[1][2]:
       pass
     else:
-      failures++
+      failures += 1
       print("Test " + str(test[0] + 1) + " " + str(test[1][0]) +" failed (incorrect output %s)\n" % result)
   except Exception as e:
-    failures++
+    failures += 1
     print("Test " + str(test[0] + 1) + " " + str(test[1][0]) +" failed (exception %s)\n" % e)
 
-if !failures:
+if not failures:
   sys.exit(1)
 else:
   sys.exit(0)

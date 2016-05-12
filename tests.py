@@ -8,7 +8,7 @@ tests = [
 
 interpreter_path = "python3"
 
-failures = []
+failures = 0
 
 for test in enumerate(tests):
   try:
@@ -19,9 +19,13 @@ for test in enumerate(tests):
     if result == test[1][2]:
       pass
     else:
+      failures++
       print("Test " + str(test[0] + 1) + " " + str(test[1][0]) +" failed (incorrect output %s)\n" % result)
   except Exception as e:
+    failures++
     print("Test " + str(test[0] + 1) + " " + str(test[1][0]) +" failed (exception %s)\n" % e)
 
-if not failures:
+if !failures:
   sys.exit(1)
+else:
+  sys.exit(0)

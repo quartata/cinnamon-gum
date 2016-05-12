@@ -25,7 +25,7 @@ for test in enumerate(tests):
     failures += 1
     print("Test " + str(test[0] + 1) + " " + str(test[1][0]) +" failed (exception %s)\n" % e)
 
-if not failures:
+if failures:
   sys.exit(1)
 else:
   sys.exit(0)

@@ -1,6 +1,17 @@
 #!/usr/bin/python3
 
-import ast, exrex, hashlib, lzma, lzstring, re, sys, zlib
+import ast, exrex, hashlib, lzma, re, sys, zlib
+
+def bb96encode(code, a = 0, s = []):
+  code = list(code)
+  for byte in code:
+    a = 256 * a + byte
+  while a:
+    a -= 1
+    r = a % 96
+    s = [[10, r + 32][r < 95]] + s
+    a //= 96
+  return bytes(s)
 
 with open(sys.argv[1], 'rb') as file:
   code = file.read()
@@ -21,7 +32,7 @@ else:
     try:
       o = lzma.decompress(code, format=lzma.FORMAT_RAW, filters=[{'id': lzma.FILTER_LZMA2, 'preset': 9 | lzma.PRESET_EXTREME}])
     except:
-      o = lzstring.LZString().decompress(code)
+      o = bb96encode(code)
 
   o = "".join(map(chr,o))
 

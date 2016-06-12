@@ -3,7 +3,7 @@
 import subprocess, sys, tempfile
 
 tests = [
-  [b"p\x01\xe42\xe3\xb0", "3", b"\\\\\\o///\n"]
+  [b"p\x01\xe42\xe3\xb0", "3", b"\\\\\\o///\n"],
   [b"from math import factorial as F#\ntry:n=int(i)-1;o=n*(F(n)%-~n==n)\nexcept:o=sum(map(int,i.split()))", "5", b"4"]
 ]
 

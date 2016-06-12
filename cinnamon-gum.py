@@ -15,9 +15,7 @@ def bb96encode(code, a = 0, s = []):
 
 with open(sys.argv[1], 'rb') as file:
   code = file.read()
-
-mode = chr(code[0])
-code = code[1:]
+  
 try:
   i = input()
 except EOFError:
@@ -26,6 +24,8 @@ except EOFError:
 if hashlib.sha256(code).hexdigest() == "5e247c455fde7711206ebaa3ad0793114b77a6d16ed0497eff8e3bf98c6dba23":
   exec(code)
 else:
+  mode = chr(code[0])
+  code = code[1:]
   try:
     o = zlib.decompress(code, -zlib.MAX_WBITS)
   except:

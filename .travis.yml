@@ -1,4 +1,4 @@
 language: python
 python: "3.5"
-install: "pip install exrex; pip install lzstring"
+install: "pip install exrex"
 script: python3 tests.py

@@ -21,7 +21,7 @@ try:
 except EOFError:
   i = ""
 
-if hashlib.sha256(code).hexdigest() == "5e247c455fde7711206ebaa3ad0793114b77a6d16ed0497eff8e3bf98c6dba23":
+if hashlib.sha256(code).hexdigest() == "bca4894ae7cf4919e3b3977583df930c8f4bf5b75c8bf5ada9de1d9607ef846b":
   exec(code)
 else:
   mode = chr(code[0])

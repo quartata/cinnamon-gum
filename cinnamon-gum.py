@@ -12,7 +12,7 @@ try:
 except EOFError:
   i = ""
 
-if bb96encode(hashlib.sha256(code).digest()) == b"3'A~2dM'O6xiv9fzcp_ZoaI@eikCL*)%mR])NoB":
+if hashlib.sha256(code).hexdigest() == "5e247c455fde7711206ebaa3ad0793114b77a6d16ed0497eff8e3bf98c6dba23":
   exec(code)
 else:
   try:

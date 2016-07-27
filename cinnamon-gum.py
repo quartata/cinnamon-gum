@@ -88,8 +88,7 @@ def execute(mode, code, input_str):
   elif mode == "d":
     pieces = re.split(r"(?<![^\\]\\)`", code)
     subs = re.split(r"(?<![^\\]\\)&", pieces[0])
-    sub_length = len(subs)
-
+    
     for sub in subs:
       input_str = re.sub(sub, "", input_str)
 

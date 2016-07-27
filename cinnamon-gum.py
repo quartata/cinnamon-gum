@@ -85,6 +85,18 @@ def execute(mode, code, input_str):
       result = "`" + "`".join(pieces[1:])
     else:
       result = input_str
+  elif mode == "d":
+    pieces = re.split(r"(?<![^\\]\\)`", code)
+    subs = re.split(r"(?<![^\\]\\)&", pieces[0])
+    sub_length = len(subs)
+
+    for sub in subs:
+      input_str = re.sub(sub, "", input_str)
+
+    if len(pieces) > 1:
+      result = "`" + "`".join(pieces[1:])
+    else:
+      result = input_str
   elif mode == "S":
     pieces = re.split(r"(?<![^\\]\\)`", code)
     subs = re.split(r"(?<![^\\]\\)&", pieces[0])
@@ -104,7 +116,7 @@ def execute(mode, code, input_str):
   else:
     result = code
 
-  if result[0] == "`":
+  if len(result) > 0 and result[0] == "`":
     input_pieces = re.split(r"(?<![^\\]\\)!", result)
     if len(input_pieces) >= 2:
       execute(result[1], input_pieces[0][2:], "!".join(input_pieces[1:]))

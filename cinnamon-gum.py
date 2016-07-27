@@ -26,11 +26,11 @@ def decompress(code):
 
   return mode, "".join(map(chr, decompressed_code)) 
 
-def get_input():
+def get_input(last_input):
   try:
     return input()
   except EOFError:
-    return ""
+    return last_input
 
 def execute(mode, code, input_str):
   result = ""
@@ -40,7 +40,10 @@ def execute(mode, code, input_str):
      table = {}
      for row in rows:
        table.update(dict(zip(row[:-1],[row[-1]]*(len(row)-1))))
-     result = table[i]
+     if input_str in table:
+       result = table[input_str]
+     else:
+       result = table["?"]
   elif mode == "f":
      result = code % ast.literal_eval(input_str)
   elif mode == "g":
@@ -54,7 +57,11 @@ def execute(mode, code, input_str):
       print(string)
     return
   elif mode == "p":
-    result = re.sub(r"~(.)",r"\1" * ast.literal_eval(input_str), code) 
+    literal = ast.literal_eval(input_str)
+    if isinstance(literal, int):
+      result = re.sub(r"~(.+?)~",r"\1" * literal, code, flags=re.DOTALL) 
+    else:
+      result = re.sub(r"%(.+?)%",r"\1" * literal[1], re.sub(r"~(.+?)~",r"\1" * literal[0], code, flags=re.DOTALL), flags=re.DOTALL)
   elif mode == "e":
     rows = [re.split(r"(?<![^\\]\\)&", row) for row in re.split(r"(?<![^\\]\\);", code)]
     table = {}
@@ -64,7 +71,7 @@ def execute(mode, code, input_str):
       result += table[i]
   elif mode == "s":
     subs = re.split(r"(?<![^\\]\\)&", code)
-    result = re.sub(subs[0],subs[1],i)
+    result = re.sub(subs[0],subs[1], input_str)
   elif mode == "i":
     result = code + input_str
   else:
@@ -75,14 +82,14 @@ def execute(mode, code, input_str):
     if len(input_pieces) >= 2:
       execute(result[1], input_pieces[0][2:], "!".join(input_pieces[1:]))
     else:
-      execute(result[1], result[2:], get_input())
+      execute(result[1], result[2:], get_input(input_str))
   else:
     print(result)
 
 if __name__ == "__main__":
   with open(sys.argv[1], 'rb') as file:
     code = file.read()
-    i = get_input()
+    i = get_input("")
 
     if hashlib.sha256(code).hexdigest() == "bca4894ae7cf4919e3b3977583df930c8f4bf5b75c8bf5ada9de1d9607ef846b":
       exec(code)

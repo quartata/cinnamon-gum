@@ -59,9 +59,9 @@ def execute(mode, code, input_str):
   elif mode == "p":
     literal = ast.literal_eval(input_str)
     if isinstance(literal, int):
-      result = re.sub(r"~(.+?)~",r"\1" * literal, code, flags=re.DOTALL) 
+      result = re.sub(r"(?<![^\\]\\)~(.+?)(?<![^\\]\\)~",r"\1" * literal, code, flags=re.DOTALL) 
     else:
-      result = re.sub(r"%(.+?)%",r"\1" * literal[1], re.sub(r"~(.+?)~",r"\1" * literal[0], code, flags=re.DOTALL), flags=re.DOTALL)
+      result = re.sub(r"(?<![^\\]\\)%(.+?)(?<![^\\]\\)%",r"\1" * literal[1], re.sub(r"~(.+?)~",r"\1" * literal[0], code, flags=re.DOTALL), flags=re.DOTALL)
   elif mode == "e":
     rows = [re.split(r"(?<![^\\]\\)&", row) for row in re.split(r"(?<![^\\]\\);", code)]
     table = {}
@@ -69,11 +69,38 @@ def execute(mode, code, input_str):
       table.update(dict(zip(row[:-1],[row[-1]]*(len(row)-1))))
     for char in i:
       result += table[i]
+  elif mode == "o":
+    pieces = re.split(r"(?<![^\\]\\)`", code)
+    print(pieces[0])
+    result = "`" + "`".join(pieces[1:])
   elif mode == "s":
-    subs = re.split(r"(?<![^\\]\\)&", code)
-    result = re.sub(subs[0],subs[1], input_str)
+    pieces = re.split(r"(?<![^\\]\\)`", code)
+    subs = re.split(r"(?<![^\\]\\)&", pieces[0])
+    sub_length = len(subs)
+
+    for i in range(0, len(subs), 2):
+      input_str = re.sub(subs[i], subs[i + 1], input_str)
+
+    if len(pieces) > 1:
+      result = "`" + "`".join(pieces[1:])
+    else:
+      result = input_str
+  elif mode == "S":
+    pieces = re.split(r"(?<![^\\]\\)`", code)
+    subs = re.split(r"(?<![^\\]\\)&", pieces[0])
+    sub_length = len(subs)
+    output = input_str
+    for i in range(0, len(subs), 2):
+      output = re.sub(subs[i], subs[i + 1], output)
+    if len(pieces) > 1:
+      result = "`" + "`".join(pieces[1:])
+    else:
+      result = ""
+    print(output)
   elif mode == "i":
     result = code + input_str
+  elif mode == "I":
+    result = code + "\n" + input_str
   else:
     result = code
 

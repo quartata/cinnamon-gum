@@ -46,6 +46,14 @@ def execute(mode, code, input_str):
        result = table["?"]
   elif mode == "f":
      result = code % ast.literal_eval(input_str)
+  elif mode == "F":
+     literal = ast.literal_eval(input_str)
+     if isinstance(literal, tuple):
+       result = code % literal
+       input_str = str(sum([len(str(x)) for x in literal]))
+     else:
+       result = code % literal
+       input_str = str(len(str(literal)))
   elif mode == "g":
     for string in exrex.generate(code):
       print(string)
@@ -62,6 +70,8 @@ def execute(mode, code, input_str):
       result = pcre.sub(r"(?<![^\\]\\)~(.+?)(?<![^\\]\\)~",r"\1" * literal, code, flags=pcre.DOTALL) 
     else:
       result = pcre.sub(r"(?<![^\\]\\)%(.+?)(?<![^\\]\\)%",r"\1" * literal[1], pcre.sub(r"~(.+?)~",r"\1" * literal[0], code, flags=pcre.DOTALL), flags=pcre.DOTALL)
+  elif mode == "P":
+    result = pcre.sub(r"(.)(?<![^\\]\\)~",r"\1" * ast.literal_eval(input_str), code, flags=pcre.DOTALL)
   elif mode == "e":
     rows = [pcre.split(r"(?<![^\\]\\)&", row) for row in pcre.split(r"(?<![^\\]\\);", code)]
     table = {}

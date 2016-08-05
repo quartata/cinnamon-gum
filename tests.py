@@ -5,7 +5,7 @@ import subprocess, sys, tempfile
 tests = [
   [b"p\x19\x88\x8a\xf35b_", "3", b"\\\\\\o///\n"],
   [b"from math import factorial as F#\ntry:n=int(i)-1;print(n*(F(n)%-~n==n))\nexcept:print(sum(map(int,i.split())))", "5", b"4\n"],
-  [b"l\x1f2\xe01]\x90I\x85\xdf\x10T\x03d-\xc3J\xdb8\xd3", "1", b"aa\n"]
+  [b"lZ!\x841\xfcv\xba\x04\xac\xe0", "hgfd", b"gack\n\n"]
 ]
 
 interpreter_path = "python3"

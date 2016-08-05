@@ -137,10 +137,17 @@ def execute(mode, code, input_str):
 if __name__ == "__main__":
   pcre.enable_re_template_mode()
   with open(sys.argv[1], 'rb') as file:
-    code = file.read()
-    i = get_input("")
-
-    if hashlib.sha256(code).hexdigest() == "bca4894ae7cf4919e3b3977583df930c8f4bf5b75c8bf5ada9de1d9607ef846b":
-      exec(code)
+    string = file.read()
+    if hashlib.sha256(string).hexdigest() == "bca4894ae7cf4919e3b3977583df930c8f4bf5b75c8bf5ada9de1d9607ef846b":
+      i = input()
+      exec(string)
     else:
-      execute(*(decompress(code) + (i,)))
+      mode, code = decompress(string)
+      input_pieces = pcre.split(r"(?<![^\\]\\)!", code)
+  
+      if len(input_pieces) >= 2:
+        i = get_input("!".join(input_pieces[1:]))
+      else:
+        i = get_input("")
+
+      execute(mode, input_pieces[0], i)

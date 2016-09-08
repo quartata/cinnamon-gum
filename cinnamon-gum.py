@@ -56,13 +56,13 @@ def execute(mode, code, input_str):
        input_str = str(len(str(literal)))
   elif mode == "g":
     for string in exrex.generate(code):
-      print(string)
+      print(string.encode("utf-8").decode("unicode-escape"))
     return # Generate is always terminal
   elif mode == "h":
     if type(input_str) is str:
       input_str = pcre.escape(input_str)
     for string in exrex.generate(code % input_str):
-      print(string)
+      print(string.encode("utf-8").decode("unicode-escape"))
     return
   elif mode == "p":
     literal = ast.literal_eval(input_str)
@@ -81,7 +81,7 @@ def execute(mode, code, input_str):
       result += table[i]
   elif mode == "o":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
-    print(pieces[0])
+    print(pieces[0].encode("utf-8").decode("unicode-escape"))
     result = "`" + "`".join(pieces[1:])
   elif mode == "s":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
@@ -117,7 +117,7 @@ def execute(mode, code, input_str):
       result = "`" + "`".join(pieces[1:])
     else:
       result = ""
-    print(output)
+    print(output.encode("utf-8").decode("unicode-escape"))
   elif mode == "i":
     result = code + input_str
   elif mode == "I":
@@ -132,7 +132,7 @@ def execute(mode, code, input_str):
     else:
       execute(result[1], result[2:], get_input(input_str))
   else:
-    print(result)
+    print(result.encode("utf-8").decode("unicode-escape"))
 
 if __name__ == "__main__":
   pcre.enable_re_template_mode()

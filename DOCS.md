@@ -26,7 +26,7 @@ The first mode is the execute mode `l`, or *l*ookup mode. It parses the code in 
 
     key1&key2&...&value;...
 
-and then maps input to the appropriate value. In the case of an input of `0`, the result is the string `Just a zero`, which CG simply prints to STDOUT. In the case of `1`, however, the resulting string is `\`dABC\`fHi %s`. CG sees the backtick and treats this as a new stage.
+and then maps input to the appropriate value. In the case of an input of `0`, the result is the string `Just a zero`, which CG simply prints to STDOUT. In the case of `1`, however, the resulting string is `` `dABC`fHi %s``. CG sees the backtick and treats this as a new stage.
 
 This next stage's mode is the modify mode `d`, which takes the next line of input and removes anything matching the specified regex: in this case it simply deletes any uppercase `A`s. The result is then passed as input to the next stage. This stage has the execute mode `f`, or print*f*. In this case, it simply substitutes the `%s` with our result from the last stage.
 

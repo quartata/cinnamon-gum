@@ -43,6 +43,8 @@ def handle_table(rows):
   
   for row in rows:
     table.update(dict(zip(row[:-1],[row[-1]] * (len(row) - 1))))
+    
+  return table
   
 def execute(mode, code, input_str):
   result = ""

@@ -124,7 +124,7 @@ def execute(mode, code, input_str):
     sub_length = len(subs)
 
     result = handle_pieces(pieces[1:])
-    print(unescape(handle_subs(input_str, subs))
+    print(unescape(handle_subs(input_str, subs)))
   elif mode == "i":
     result = code + input_str
   elif mode == "I":

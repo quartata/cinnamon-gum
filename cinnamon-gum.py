@@ -38,6 +38,12 @@ def handle_pieces(pieces, input):
   else:
     return input
 
+def handle_subs(string, subs):
+  for i in range(0, len(subs), 2):
+    string = pcre.sub(subs[i], subs[i + 1], string)
+    
+  return string
+
 def handle_table(rows):
   table = {}
   
@@ -45,6 +51,9 @@ def handle_table(rows):
     table.update(dict(zip(row[:-1],[row[-1]] * (len(row) - 1))))
     
   return table
+
+def unescape(string):
+  return string.encode("utf-8").decode("unicode-escape")
   
 def execute(mode, code, input_str):
   result = ""
@@ -69,13 +78,13 @@ def execute(mode, code, input_str):
        input_str = str(len(str(literal)))
   elif mode == "g":
     for string in exrex.generate(code):
-      print(string.encode("utf-8").decode("unicode-escape"))
+      print(unescape(string))     
     return # Generate is always terminal
   elif mode == "h":
     if type(input_str) is str:
       input_str = pcre.escape(input_str)
     for string in exrex.generate(code % input_str):
-      print(string.encode("utf-8").decode("unicode-escape"))
+      print(unescape(string)) 
     return
   elif mode == "p":
     literal = ast.literal_eval(input_str)
@@ -91,19 +100,15 @@ def execute(mode, code, input_str):
     
     for char in i:
       result += table[i]
-      
   elif mode == "o":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
-    print(pieces[0].encode("utf-8").decode("unicode-escape"))
+    print(unescape(pieces[0]))
     result = handle_pieces(pieces[1:])
   elif mode == "s":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
     subs = pcre.split(r"(?<![^\\]\\)&", pieces[0])
-    sub_length = len(subs)
 
-    for i in range(0, len(subs), 2):
-      input_str = pcre.sub(subs[i], subs[i + 1], input_str)
-
+    input_str = handle_subs(input_str, subs)
     result = handle_pieces(pieces[1:])
   elif mode == "d":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
@@ -117,12 +122,9 @@ def execute(mode, code, input_str):
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
     subs = pcre.split(r"(?<![^\\]\\)&", pieces[0])
     sub_length = len(subs)
-    output = input_str
-    for i in range(0, len(subs), 2):
-      output = pcre.sub(subs[i], subs[i + 1], output)
-    
+
     result = handle_pieces(pieces[1:])
-    print(output.encode("utf-8").decode("unicode-escape"))
+    print(unescape(handle_subs(input_str, subs))
   elif mode == "i":
     result = code + input_str
   elif mode == "I":
@@ -137,7 +139,7 @@ def execute(mode, code, input_str):
     else:
       execute(result[1], result[2:], get_input(input_str))
   else:
-    print(result.encode("utf-8").decode("unicode-escape"))
+    print(unescape(result))
 
 if __name__ == "__main__":
   pcre.enable_re_template_mode()

@@ -32,14 +32,25 @@ def get_input(last_input):
   except EOFError:
     return last_input
 
+def handle_pieces(pieces, input):  
+  if len(pieces) > 1:
+    return "`" + "`".join(pieces[1:])
+  else:
+    return input
+
+def handle_table(rows):
+  table = {}
+  
+  for row in rows:
+    table.update(dict(zip(row[:-1],[row[-1]] * (len(row) - 1))))
+  
 def execute(mode, code, input_str):
   result = ""
 
   if mode == "l":
-     rows = [pcre.split(r"(?<![^\\]\\)&", row) for row in pcre.split(r"(?<![^\\]\\);", code)]
-     table = {}
-     for row in rows:
-       table.update(dict(zip(row[:-1],[row[-1]]*(len(row)-1))))
+     rows = (pcre.split(r"(?<![^\\]\\)&", row) for row in pcre.split(r"(?<![^\\]\\);", code))
+     table = handle_table(rows)
+    
      if input_str in table:
        result = table[input_str]
      else:
@@ -50,7 +61,7 @@ def execute(mode, code, input_str):
      literal = ast.literal_eval(input_str)
      if isinstance(literal, tuple):
        result = code % literal
-       input_str = str(sum([len(str(x)) for x in literal]))
+       input_str = str(sum((len(str(x)) for x in literal)))
      else:
        result = code % literal
        input_str = str(len(str(literal)))
@@ -73,16 +84,16 @@ def execute(mode, code, input_str):
   elif mode == "P":
     result = pcre.sub(r"(.)(?<![^\\]\\)~",r"\1" * ast.literal_eval(input_str), code, flags=pcre.DOTALL)
   elif mode == "e":
-    rows = [pcre.split(r"(?<![^\\]\\)&", row) for row in pcre.split(r"(?<![^\\]\\);", code)]
-    table = {}
-    for row in rows:
-      table.update(dict(zip(row[:-1],[row[-1]]*(len(row)-1))))
+    rows = (pcre.split(r"(?<![^\\]\\)&", row) for row in pcre.split(r"(?<![^\\]\\);", code))
+    table = handle_table(rows)
+    
     for char in i:
       result += table[i]
+      
   elif mode == "o":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
     print(pieces[0].encode("utf-8").decode("unicode-escape"))
-    result = "`" + "`".join(pieces[1:])
+    result = handle_pieces(pieces[1:])
   elif mode == "s":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
     subs = pcre.split(r"(?<![^\\]\\)&", pieces[0])
@@ -91,10 +102,7 @@ def execute(mode, code, input_str):
     for i in range(0, len(subs), 2):
       input_str = pcre.sub(subs[i], subs[i + 1], input_str)
 
-    if len(pieces) > 1:
-      result = "`" + "`".join(pieces[1:])
-    else:
-      result = input_str
+    result = handle_pieces(pieces[1:])
   elif mode == "d":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
     subs = pcre.split(r"(?<![^\\]\\)&", pieces[0])
@@ -102,10 +110,7 @@ def execute(mode, code, input_str):
     for sub in subs:
       input_str = pcre.sub(sub, "", input_str)
 
-    if len(pieces) > 1:
-      result = "`" + "`".join(pieces[1:])
-    else:
-      result = input_str
+    result = handle_pieces(pieces[1:])
   elif mode == "S":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
     subs = pcre.split(r"(?<![^\\]\\)&", pieces[0])
@@ -113,10 +118,8 @@ def execute(mode, code, input_str):
     output = input_str
     for i in range(0, len(subs), 2):
       output = pcre.sub(subs[i], subs[i + 1], output)
-    if len(pieces) > 1:
-      result = "`" + "`".join(pieces[1:])
-    else:
-      result = ""
+    
+    result = handle_pieces(pieces[1:])
     print(output.encode("utf-8").decode("unicode-escape"))
   elif mode == "i":
     result = code + input_str

@@ -123,8 +123,10 @@ def execute(mode, code, input_str):
     subs = pcre.split(r"(?<![^\\]\\)&", pieces[0])
     sub_length = len(subs)
 
-    result = handle_pieces(pieces[1:])
-    print(unescape(handle_subs(input_str, subs)))
+    output = unescape(handle_subs(input_str, subs))
+    
+    result = handle_pieces(pieces[1:], "")
+    print(output)
   elif mode == "i":
     result = code + input_str
   elif mode == "I":

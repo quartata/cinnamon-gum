@@ -32,11 +32,11 @@ def get_input(last_input):
   except EOFError:
     return last_input
 
-def handle_pieces(pieces, input):  
+def handle_pieces(pieces, input_str):  
   if len(pieces) > 1:
     return "`" + "`".join(pieces[1:])
   else:
-    return input
+    return input_str
 
 def handle_subs(string, subs):
   for i in range(0, len(subs), 2):
@@ -103,13 +103,13 @@ def execute(mode, code, input_str):
   elif mode == "o":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
     print(unescape(pieces[0]))
-    result = handle_pieces(pieces[1:])
+    result = handle_pieces(pieces[1:], "")
   elif mode == "s":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
     subs = pcre.split(r"(?<![^\\]\\)&", pieces[0])
 
     input_str = handle_subs(input_str, subs)
-    result = handle_pieces(pieces[1:])
+    result = handle_pieces(pieces[1:], input_str)
   elif mode == "d":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
     subs = pcre.split(r"(?<![^\\]\\)&", pieces[0])
@@ -117,7 +117,7 @@ def execute(mode, code, input_str):
     for sub in subs:
       input_str = pcre.sub(sub, "", input_str)
 
-    result = handle_pieces(pieces[1:])
+    result = handle_pieces(pieces[1:], input_str)
   elif mode == "S":
     pieces = pcre.split(r"(?<![^\\]\\)`", code)
     subs = pcre.split(r"(?<![^\\]\\)&", pieces[0])

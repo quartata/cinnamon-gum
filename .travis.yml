@@ -2,3 +2,6 @@ language: python
 python: "3.5"
 install: "pip install exrex; pip install python-pcre"
 script: python3 tests.py
+addons:
+    code_climate:
+        repo_token: 516ded5d48fcb189f933901a0f478c6793bd4563f332c8d0c2ffbdc5bf22498e

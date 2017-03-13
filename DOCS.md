@@ -42,7 +42,7 @@ In most cases, when a stage needs input it either takes the next line of input f
 
 Here's a rudimentary example:
 
-    `fHello, %s here!Cinnamon Gum`
+    fHello, %s here!Cinnamon Gum
 
 This passes the input string `Cinnamon Gum` to the `f` stage. Do note that a stage will only read `!` input or input from a modify mode if STDIN is already exhausted; this limitation will probably be removed in the future.
 
